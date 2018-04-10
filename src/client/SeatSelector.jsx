@@ -7,7 +7,7 @@ const SeatSelector =  props =>{
     
     let seatMap = props.selectedFlight.available_seats.map((seat) =>{
         return(
-            <li className="list-group-item list-group-item-action" key={seat.id} onClick={() => props.SeatsSelectorHandler(seat.id)}>
+            <li className={`list-group-item list-group-item-action ${props.selectedSeats.includes(seat.id) ? 'selected-seat' : ''}`} key={seat.id} onClick={() => props.SeatsSelectorHandler(seat.id)}>
                 Position:{seat.position}
             </li>
         );

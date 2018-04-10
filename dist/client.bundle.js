@@ -27325,7 +27325,7 @@ var SeatSelector = function SeatSelector(props) {
     var seatMap = props.selectedFlight.available_seats.map(function (seat) {
         return _react2.default.createElement(
             'li',
-            { className: 'list-group-item list-group-item-action', key: seat.id, onClick: function onClick() {
+            { className: 'list-group-item list-group-item-action ' + (props.selectedSeats.includes(seat.id) ? 'selected-seat' : ''), key: seat.id, onClick: function onClick() {
                     return props.SeatsSelectorHandler(seat.id);
                 } },
             'Position:',

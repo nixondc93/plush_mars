@@ -22,7 +22,7 @@ Displays when an error occurs in an API request. Also gives the option to naviag
 #### `FlightConfirmation.jsx`
 Component which displays the flight confirmation, which is the response from posting the flight. Also displays a button so users may navigate to the beginning and book another flight. 
 
-###Note:
+### Note:
 
 I didn't check to ensure the dates are not in the past because the API returned responses successfully regardless.
 I did check to ensure that the depart date is before the return date. 

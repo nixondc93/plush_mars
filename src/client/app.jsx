@@ -46,7 +46,7 @@ class PlushMars extends React.Component {
             errorOnPostFlight: false,
             dateError: true
         };
-
+        
         this.submitSearch = this.submitSearch.bind(this);
         this.dateHandler = this.dateHandler.bind(this);
         this.seatChange = this.seatChange.bind(this);

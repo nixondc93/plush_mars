@@ -42,3 +42,9 @@ a {
 
 a:hover {
   color: inherit; }
+
+.selected-seat {
+  background-color: lightblue; }
+
+.selected-seat:hover {
+  background-color: lightblue; }
