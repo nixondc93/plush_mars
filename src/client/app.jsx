@@ -34,17 +34,14 @@ class PlushMars extends React.Component {
                 year: 2018,
             },
             numberOfSeats: 1,
-            flightFound: false,
             months: [1,2,3,4,5,6,7,8,9,10,11,12],
             days: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
             year: [2018, 2019, 2020, 2021, 2022],
             seats: 20,
             selectedSeats: JSON.parse(localStorage.getItem('selectedSeats')) || [],
-            seatsFound: false,
             flightData: JSON.parse(localStorage.getItem('flightData')) || null,
             flightConfirmationData: JSON.parse(localStorage.getItem('flightConfirmationData')) || null,
             selectedFlightData: JSON.parse(localStorage.getItem('selectedFlightData')) || null,
-            flightBooked: false,
             errorOnGetFlights: null,
             errorOnPostFlight: false,
             dateError: true
@@ -58,7 +55,7 @@ class PlushMars extends React.Component {
         this.postFlight = this.postFlight.bind(this);
         this.ResetFlightData = this.ResetFlightData.bind(this);
     }
-
+    // Resets state so another flight may be booked
     ResetFlightData(){
         this.setState({
             flightData: null,
@@ -80,7 +77,7 @@ class PlushMars extends React.Component {
         });
         localStorage.clear();
     }
-
+    // API GET request to fetch flights
     submitSearch() {
         let seats = 'number_seats=' + this.state.numberOfSeats;
         let departureDateObject = this.state.departureDate;
@@ -116,6 +113,7 @@ class PlushMars extends React.Component {
             });
     }
 
+    // sets state for returnDate, DepartureDate and detects if an error has occurred
     dateHandler(dateObject, arrivalOrDeparture) {
         let newdate = Number(new Date(`${dateObject.year}-${dateObject.month}-${dateObject.day}`).getTime()),
             returnDate = Number(new Date(`${this.state.returnDate.year}-${this.state.returnDate.month}-${this.state.returnDate.day}`).getTime()),
@@ -143,12 +141,11 @@ class PlushMars extends React.Component {
         localStorage.setItem('selectedFlightData', JSON.stringify(flightObj));
         this.setState({
             selectedFlightData: flightObj,
-            seatsFound: true,
-            flightFound: false,
             selectedSeats: []
         });
     }
 
+    // Logic to add and remove seat from state
     SeatsSelectorHandler(selectedSeatId){
         let selectedSeats = [...this.state.selectedSeats];
       
@@ -186,26 +183,22 @@ class PlushMars extends React.Component {
             });
     }
 
+    // Tracks Number of seats selected for the GET Request
     seatChange(numberOfSeats) {
         this.setState({numberOfSeats: numberOfSeats});
     }
 
     render() {
-        // let flightFound = this.state.flightFound;
-        // let seatsFound = this.state.seatsFound;
-        let selectedSeats = this.state.selectedSeats;
-        // let flightBooked = this.state.flightBooked;
-        let dateError = this.state.dateError;
-        let months = this.state.months;
-        let days = this.state.days;
-        let year = this.state.year;
-        let flightSelectorHandler = this.flightSelectorHandler;
-        let SeatsSelectorHandler = this.SeatsSelectorHandler;
-        let selectedFlightData = this.state.selectedFlightData; 
-        let flightData = this.state.flightData;
-        let flightConfirmationData = this.state.flightConfirmationData;
-        let errorOnPostFlight = this.state.errorOnPostFlight; 
-        let errorOnGetFlights = this.state.errorOnGetFlights;
+        let dateError = this.state.dateError,
+            months = this.state.months,
+            days = this.state.days,
+            year = this.state.year,
+            selectedFlightData = this.state.selectedFlightData,
+            selectedSeats = this.state.selectedSeats,
+            flightData = this.state.flightData,
+            flightConfirmationData = this.state.flightConfirmationData,
+            errorOnPostFlight = this.state.errorOnPostFlight,
+            errorOnGetFlights = this.state.errorOnGetFlights;
         
         return (
             <div className="wrapper">
@@ -217,8 +210,8 @@ class PlushMars extends React.Component {
                         <Switch>
                             <Route exact path='/' render={() => <DateSelector days={days} months={months} year={year} seatChange={this.seatChange} submitSearch={this.submitSearch} dateHandler={this.dateHandler} dateError={dateError}/>}/>
                             <Route path='/flight-confirmation' render={() => errorOnPostFlight ?  <Redirect to='/error'/> : <FlightConfirmation flightConfirmationData={flightConfirmationData} selectedFlightData={selectedFlightData} selectedSeats={selectedSeats} ResetFlightData={this.ResetFlightData} errorOnPostFlight={errorOnPostFlight}/>}/>
-                            <Route path='/seat-selector' render={() => <SeatSelector postFlight={this.postFlight} SeatsSelectorHandler={SeatsSelectorHandler} selectedFlight={selectedFlightData} selectedSeats={selectedSeats}/>}/>
-                            <Route path='/flight-selector' render={() => errorOnGetFlights ?  <Redirect to='/error'/> : <FlightSelector flightData={flightData} flightSelectorHandler={flightSelectorHandler}/>}/>
+                            <Route path='/seat-selector' render={() => <SeatSelector postFlight={this.postFlight} SeatsSelectorHandler={this.SeatsSelectorHandler} selectedFlight={selectedFlightData} selectedSeats={selectedSeats}/>}/>
+                            <Route path='/flight-selector' render={() => errorOnGetFlights ?  <Redirect to='/error'/> : <FlightSelector flightData={flightData} flightSelectorHandler={this.flightSelectorHandler}/>}/>
                             <Route path='/error' render={()=> <OnError ResetFlightData={this.ResetFlightData}/>}/>
                             <Route render={()=> <OnError ResetFlightData={this.ResetFlightData}/>}/>
                         </Switch>

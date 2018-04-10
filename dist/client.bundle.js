@@ -11601,17 +11601,14 @@ var PlushMars = function (_React$Component) {
                 year: 2018
             },
             numberOfSeats: 1,
-            flightFound: false,
             months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
             year: [2018, 2019, 2020, 2021, 2022],
             seats: 20,
             selectedSeats: JSON.parse(localStorage.getItem('selectedSeats')) || [],
-            seatsFound: false,
             flightData: JSON.parse(localStorage.getItem('flightData')) || null,
             flightConfirmationData: JSON.parse(localStorage.getItem('flightConfirmationData')) || null,
             selectedFlightData: JSON.parse(localStorage.getItem('selectedFlightData')) || null,
-            flightBooked: false,
             errorOnGetFlights: null,
             errorOnPostFlight: false,
             dateError: true
@@ -11626,6 +11623,8 @@ var PlushMars = function (_React$Component) {
         _this.ResetFlightData = _this.ResetFlightData.bind(_this);
         return _this;
     }
+    // Resets state so another flight may be booked
+
 
     _createClass(PlushMars, [{
         key: 'ResetFlightData',
@@ -11650,6 +11649,8 @@ var PlushMars = function (_React$Component) {
             });
             localStorage.clear();
         }
+        // API GET request to fetch flights
+
     }, {
         key: 'submitSearch',
         value: function submitSearch() {
@@ -11688,6 +11689,9 @@ var PlushMars = function (_React$Component) {
                 console.log(error);
             });
         }
+
+        // sets state for returnDate, DepartureDate and detects if an error has occurred
+
     }, {
         key: 'dateHandler',
         value: function dateHandler(dateObject, arrivalOrDeparture) {
@@ -11720,11 +11724,12 @@ var PlushMars = function (_React$Component) {
             localStorage.setItem('selectedFlightData', JSON.stringify(flightObj));
             this.setState({
                 selectedFlightData: flightObj,
-                seatsFound: true,
-                flightFound: false,
                 selectedSeats: []
             });
         }
+
+        // Logic to add and remove seat from state
+
     }, {
         key: 'SeatsSelectorHandler',
         value: function SeatsSelectorHandler(selectedSeatId) {
@@ -11770,6 +11775,9 @@ var PlushMars = function (_React$Component) {
                 _this3.setState({ errorOnPostFlight: true });
             });
         }
+
+        // Tracks Number of seats selected for the GET Request
+
     }, {
         key: 'seatChange',
         value: function seatChange(numberOfSeats) {
@@ -11780,21 +11788,16 @@ var PlushMars = function (_React$Component) {
         value: function render() {
             var _this4 = this;
 
-            // let flightFound = this.state.flightFound;
-            // let seatsFound = this.state.seatsFound;
-            var selectedSeats = this.state.selectedSeats;
-            // let flightBooked = this.state.flightBooked;
-            var dateError = this.state.dateError;
-            var months = this.state.months;
-            var days = this.state.days;
-            var year = this.state.year;
-            var flightSelectorHandler = this.flightSelectorHandler;
-            var SeatsSelectorHandler = this.SeatsSelectorHandler;
-            var selectedFlightData = this.state.selectedFlightData;
-            var flightData = this.state.flightData;
-            var flightConfirmationData = this.state.flightConfirmationData;
-            var errorOnPostFlight = this.state.errorOnPostFlight;
-            var errorOnGetFlights = this.state.errorOnGetFlights;
+            var dateError = this.state.dateError,
+                months = this.state.months,
+                days = this.state.days,
+                year = this.state.year,
+                selectedFlightData = this.state.selectedFlightData,
+                selectedSeats = this.state.selectedSeats,
+                flightData = this.state.flightData,
+                flightConfirmationData = this.state.flightConfirmationData,
+                errorOnPostFlight = this.state.errorOnPostFlight,
+                errorOnGetFlights = this.state.errorOnGetFlights;
 
             return _react2.default.createElement(
                 'div',
@@ -11824,10 +11827,10 @@ var PlushMars = function (_React$Component) {
                                     return errorOnPostFlight ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/error' }) : _react2.default.createElement(_FlightConfirmation2.default, { flightConfirmationData: flightConfirmationData, selectedFlightData: selectedFlightData, selectedSeats: selectedSeats, ResetFlightData: _this4.ResetFlightData, errorOnPostFlight: errorOnPostFlight });
                                 } }),
                             _react2.default.createElement(_reactRouterDom.Route, { path: '/seat-selector', render: function render() {
-                                    return _react2.default.createElement(_SeatSelector2.default, { postFlight: _this4.postFlight, SeatsSelectorHandler: SeatsSelectorHandler, selectedFlight: selectedFlightData, selectedSeats: selectedSeats });
+                                    return _react2.default.createElement(_SeatSelector2.default, { postFlight: _this4.postFlight, SeatsSelectorHandler: _this4.SeatsSelectorHandler, selectedFlight: selectedFlightData, selectedSeats: selectedSeats });
                                 } }),
                             _react2.default.createElement(_reactRouterDom.Route, { path: '/flight-selector', render: function render() {
-                                    return errorOnGetFlights ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/error' }) : _react2.default.createElement(_FlightSelector2.default, { flightData: flightData, flightSelectorHandler: flightSelectorHandler });
+                                    return errorOnGetFlights ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/error' }) : _react2.default.createElement(_FlightSelector2.default, { flightData: flightData, flightSelectorHandler: _this4.flightSelectorHandler });
                                 } }),
                             _react2.default.createElement(_reactRouterDom.Route, { path: '/error', render: function render() {
                                     return _react2.default.createElement(_OnError2.default, { ResetFlightData: _this4.ResetFlightData });
