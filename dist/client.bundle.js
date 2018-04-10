@@ -11657,8 +11657,8 @@ var PlushMars = function (_React$Component) {
             var _this2 = this;
 
             var seats = 'number_seats=' + this.state.numberOfSeats;
-            var departureDateObject = this.state.departureDate;
-            var returnDateObject = this.state.returnDate;
+            var departureDateObject = Object.assign({}, this.state.departureDate);
+            var returnDateObject = Object.assign({}, this.state.returnDate);
             var departureMonth = departureDateObject.month.toString().length > 1 ? departureDateObject.month : '0' + departureDateObject.month;
             var departureDay = departureDateObject.day.toString().length > 1 ? departureDateObject.day : '0' + departureDateObject.day;
             returnDateObject.month = returnDateObject.month.toString().length > 1 ? returnDateObject.month : '0' + returnDateObject.month;

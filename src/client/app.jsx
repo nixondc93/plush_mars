@@ -46,7 +46,7 @@ class PlushMars extends React.Component {
             errorOnPostFlight: false,
             dateError: true
         };
-        
+
         this.submitSearch = this.submitSearch.bind(this);
         this.dateHandler = this.dateHandler.bind(this);
         this.seatChange = this.seatChange.bind(this);
@@ -80,8 +80,8 @@ class PlushMars extends React.Component {
     // API GET request to fetch flights
     submitSearch() {
         let seats = 'number_seats=' + this.state.numberOfSeats;
-        let departureDateObject = this.state.departureDate;
-        let returnDateObject = this.state.returnDate;
+        let departureDateObject = Object.assign({}, this.state.departureDate);
+        let returnDateObject = Object.assign({}, this.state.returnDate);
         let departureMonth = departureDateObject.month.toString().length > 1 ? departureDateObject.month   : '0' + departureDateObject.month; 
         let departureDay =  departureDateObject.day.toString().length > 1 ? departureDateObject.day : '0' + departureDateObject.day;
         returnDateObject.month = returnDateObject.month.toString().length > 1 ? returnDateObject.month : '0' + returnDateObject.month;
